@@ -560,7 +560,7 @@
         <div class="project-tag">Live &mdash; Commercial Deployment</div>
         <h3>NSAV Control Suite</h3>
         <p>
-          AI-powered AV control for sports bars. HAL, the embedded AI assistant, manages
+          AI-powered control and diagnostics for AV Systems. HAL, the embedded AI assistant, manages
           46 DirecTV tuners and unlimited displays via natural language — "put ESPN on all
           the main bar TVs." HAL self-diagnosed the toggle routing bug that blanked two screens
           mid-shift. In a sports bar, a blank TV is never acceptable. HAL knew that before
@@ -703,6 +703,54 @@
   </div>
 </section>
 
+<!-- SCREENSHOTS -->
+<section style="background:var(--bg); padding:100px 24px;">
+  <div class="inner">
+    <div class="section-label">In the Wild</div>
+    <h2>The <strong>Products</strong></h2>
+    <p class="lead">Real interfaces. Real operators. Real stakes.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:8px;">
+
+      <div style="grid-column:1; display:flex; flex-direction:column; gap:16px;">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <img src="todai_brief_header.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <div style="padding:10px 16px 6px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber);">TodAI — Document Parsing</div>
+          <img src="todai_interface.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <div style="padding:10px 16px 6px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber);">TodAI — Jr. AI Chat</div>
+          <img src="todai_brief.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+      </div>
+
+      <div style="grid-column:2; display:flex; flex-direction:column; gap:16px;">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <div style="padding:10px 16px 6px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber);">Second Date — AI Interview</div>
+          <img src="second_date_interview.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <div style="padding:10px 16px 6px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber);">Second Date — Date Booking</div>
+          <img src="second_date_date.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+      </div>
+
+      <div style="grid-column:3; display:flex; flex-direction:column; gap:16px;">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <div style="padding:10px 16px 6px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber);">HAL — AV Control AI</div>
+          <img src="game_on_hall.png" class="ss-img" style="width:100%; display:block;">
+        </div>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; padding:16px;">
+          <img src="ipad.svg" class="ss-img" style="width:100%; display:block;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact-section" id="contact">
   <div class="inner">
@@ -729,5 +777,26 @@
   </div>
 </footer>
 
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out;">
+  <img id="lightbox-img" src="" style="max-width:90vw; max-height:90vh; border-radius:12px; box-shadow:0 0 60px rgba(0,0,0,0.8);">
+</div>
+
+<script>
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+document.querySelectorAll('.ss-img').forEach(img => {
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', () => openLightbox(img.src));
+});
+</script>
 </body>
 </html>
