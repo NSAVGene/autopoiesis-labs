@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autopoiesis Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #09090f;
+      --surface:  #111118;
+      --surface2: #16161f;
+      --border:   #1e1e2e;
+      --primary:  #7c6fff;
+      --amber:    #c8960a;
+      --amber-lt: #f0b720;
+      --text:     #e2e2e8;
+      --muted:    #666680;
+      --dim:      #333348;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display: flex; align-items:center; justify-content:space-between;
+      padding: 18px 40px;
+      background: rgba(9,9,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 15px; font-weight: 500; letter-spacing: 0.08em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo span { color: var(--amber); }
+
+    .nav-links { display:flex; gap:32px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center; padding: 100px 24px 80px;
+      position:relative; overflow:hidden;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 20%, rgba(124,111,255,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 80% 70%, rgba(200,150,10,0.05) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 28px; font-weight: 500;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--amber-lt) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--muted); max-width: 560px; margin: 0 auto 18px;
+      font-weight: 300;
+    }
+
+    .hero-definition {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; color: #9090bb;
+      letter-spacing: 0.05em; margin-bottom: 52px;
+    }
+
+    .hero-cta-row { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+    .btn-primary {
+      display:inline-block; padding: 12px 28px; border-radius: 6px;
+      background: var(--primary); color: #fff; font-size: 14px;
+      font-weight: 500; text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      display:inline-block; padding: 12px 28px; border-radius: 6px;
+      border: 1px solid var(--dim); color: var(--muted); font-size: 14px;
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--text); }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 100px 24px; }
+    .inner { max-width: 1000px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 14px; font-weight: 500;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300; letter-spacing: -0.02em;
+      color: #fff; margin-bottom: 20px; line-height: 1.2;
+    }
+    h2 strong { font-weight: 600; }
+
+    .lead {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 900px; margin-bottom: 48px; line-height: 1.8;
+    }
+
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ── PHILOSOPHY / SAD ── */
+    .philosophy-bg {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .philosophy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: start;
+    }
+
+    .philosophy-sticky { position: sticky; top: 120px; }
+
+    .philosophy-text h3 {
+      font-size: 1.1rem; font-weight: 500; color: #fff;
+      margin-bottom: 12px; margin-top: 36px;
+    }
+    .philosophy-text h3:first-child { margin-top: 0; }
+
+    .philosophy-text p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+
+    .callout-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 28px 0;
+    }
+    .callout-box p { color: #bbbbd0; font-size: 0.93rem; margin: 0; }
+
+    /* ── SAD LOOP DIAGRAM ── */
+    .sad-loop {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 36px 28px; text-align: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    }
+
+    .sad-loop .node {
+      display:inline-block; padding: 8px 20px;
+      background: var(--surface); border: 1px solid var(--dim);
+      border-radius: 6px; color: var(--text); margin: 4px 0;
+    }
+    .sad-loop .node.hot { border-color: var(--primary); color: var(--primary); }
+    .sad-loop .arrow { display:block; color: var(--muted); margin: 2px 0; font-size: 18px; }
+    .sad-loop .loop-label {
+      margin-top: 16px; font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .principles-list { list-style: none; margin-top: 28px; }
+    .principles-list li {
+      display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start;
+    }
+    .principle-num {
+      flex-shrink: 0; width: 28px; height: 28px;
+      background: var(--surface2); border: 1px solid var(--dim);
+      border-radius: 50%; display:flex; align-items:center; justify-content:center;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--primary); margin-top: 2px;
+    }
+    .principle-body strong { display:block; color: #fff; margin-bottom: 4px; font-size: 0.9rem; }
+    .principle-body p { color: var(--muted); font-size: 0.88rem; margin: 0; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 28px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position:absolute; top:0; left:0; right:0; height:3px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .project-card:hover { border-color: var(--dim); transform: translateY(-2px); }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-tag {
+      font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--amber); font-weight: 500; margin-bottom: 12px;
+    }
+
+    .project-card h3 {
+      font-size: 1.15rem; font-weight: 600; color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .project-card p {
+      font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 18px;
+    }
+
+    .project-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag {
+      font-size: 11px; padding: 3px 10px; border-radius: 20px;
+      background: var(--surface2); border: 1px solid var(--dim);
+      color: var(--muted); font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      text-align: center; padding: 80px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    blockquote {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300; color: #cccce0; max-width: 700px;
+      margin: 0 auto 20px; line-height: 1.6; font-style: italic;
+    }
+
+    blockquote cite {
+      display: block; font-style: normal; font-size: 12px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-top: 20px;
+    }
+
+    /* ── METHODOLOGY COMPARISON ── */
+    .compare-table {
+      width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 32px;
+    }
+    .compare-table th {
+      text-align: left; padding: 12px 18px;
+      background: var(--surface2); color: var(--primary);
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table td {
+      padding: 14px 18px; border-bottom: 1px solid var(--border); color: #aaaacc;
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { color: #fff; font-weight: 500; }
+    .compare-table td:last-child { color: var(--amber-lt); }
+
+    /* ── NOODLE CODING ── */
+    .noodle-section { background: var(--bg); }
+
+    .noodle-cards { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 40px; }
+    .noodle-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px;
+    }
+    .noodle-card .nc-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 28px;
+      font-weight: 500; color: var(--dim); margin-bottom: 12px;
+    }
+    .noodle-card h4 { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .noodle-card p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+
+    /* ── CONTACT / FOOTER ── */
+    .contact-section {
+      text-align: center; padding: 100px 24px;
+      background: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(124,111,255,0.07) 0%, transparent 70%);
+    }
+    .contact-section h2 { margin-bottom: 12px; }
+    .contact-section .lead { margin: 0 auto 36px; }
+
+    .contact-email {
+      font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;
+      color: var(--primary); text-decoration: none; border-bottom: 1px solid var(--dim);
+      padding-bottom: 2px; transition: border-color 0.2s;
+    }
+    .contact-email:hover { border-color: var(--primary); }
+
+    footer {
+      text-align: center; padding: 28px 24px;
+      border-top: 1px solid var(--border);
+    }
+    footer .copy { color: var(--amber); font-size: 13px; letter-spacing: 0.05em; }
+    footer a {
+      color: #555570; font-size: 12px; text-decoration: none;
+      border-bottom: 1px solid var(--dim); transition: color 0.2s;
+    }
+    footer a:hover { color: var(--amber); }
+    footer .sep { color: var(--dim); margin: 0 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .philosophy-grid { grid-template-columns: 1fr; }
+      .philosophy-sticky { position: static; }
+      .noodle-cards { grid-template-columns: 1fr; }
+      section { padding: 72px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Autopoiesis <span>Labs</span></a>
+  <div class="nav-links">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#sad">SAD</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Autopoiesis Labs &mdash; Los Angeles</div>
+  <h1>Systems That<br><em>Build Themselves</em></h1>
+  <p class="hero-sub">
+    We build AI-native products where the intelligence lives inside the machine &mdash;
+    not bolted on top of it.
+  </p>
+  <div class="hero-definition">
+    au&middot;to&middot;poi&middot;e&middot;sis &nbsp;/&nbsp; <em>n.</em> &nbsp;a system's ability to self-produce, maintain, and renew itself by creating its own components
+  </div>
+  <div class="hero-cta-row">
+    <a href="#sad" class="btn-primary">The SAD Methodology</a>
+    <a href="#projects" class="btn-ghost">Our Work</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHILOSOPHY -->
+<section class="philosophy-bg" id="philosophy">
+  <div class="inner">
+    <div class="section-label">Philosophy</div>
+    <div class="philosophy-grid">
+      <div class="philosophy-sticky">
+        <h2>The AI isn't a tool.<br><strong>It's a participant.</strong></h2>
+        <p class="lead">
+          Every product we build places an AI agent at the center of operations — not as an add-on,
+          but as an embedded operator with access to real state, real controls, and real consequences.
+        </p>
+        <div class="sad-loop">
+          <span class="node">Agent operates the system</span>
+          <span class="arrow">&darr;</span>
+          <span class="node hot">Agent encounters a wall</span>
+          <span class="arrow">&darr;</span>
+          <span class="node">Agent self-diagnoses</span>
+          <span class="arrow">&darr;</span>
+          <span class="node">Developer ships the fix</span>
+          <span class="arrow">&darr;</span>
+          <span class="node">Agent evolves</span>
+          <span class="arrow" style="color:var(--primary);">&#x21bb;</span>
+          <div class="loop-label">Situational Agentic Development</div>
+        </div>
+      </div>
+      <div class="philosophy-text">
+        <h3>Why "Autopoiesis"?</h3>
+        <p>
+          Biologists Maturana and Varela coined autopoiesis to describe living systems that
+          continuously produce the very components that constitute them. A cell doesn't receive
+          instructions to function — it functions, and in functioning, recreates the conditions
+          for its own existence.
+        </p>
+        <p>
+          Our products work the same way. The AI inside each system encounters real problems through
+          real use. It reports what it needs. The developer builds it. The agent becomes more capable.
+          The loop accelerates. The system produces itself.
+        </p>
+
+        <h3>Not Vibe Coding. Not External AI.</h3>
+        <p>
+          There's a difference between asking an AI to write code and building a product where
+          an AI is one of the operators. We call the former vibe coding. We coined something
+          different: <strong style="color:#fff;">Noodle Coding</strong> — collaborative AI development
+          with real intent, real products, and real stakes.
+        </p>
+        <p>
+          And there's a difference between AI that acts on code from outside (automated test runners,
+          CI pipelines, code review) and AI that lives inside the product, doing the job,
+          hitting walls, and telling you what's broken. That's the distinction that matters.
+        </p>
+
+        <div class="callout-box">
+          <p>"Your AI is SAD — it's stuck in your product trying to do its job and telling you
+          what's broken. <strong style="color:#e2e2e8;">Listen to it.</strong>"</p>
+        </div>
+
+        <h3>The Agent as Stakeholder</h3>
+        <p>
+          When an AI agent actually operates a system, it accumulates something no spec or test
+          suite can generate: <em>experience</em>. It knows which workflows are fragile. It knows
+          what information it lacks. It can be asked "what would make your job easier?" and answer
+          from operational memory, not pattern-matched suggestion.
+        </p>
+        <p>
+          This transforms development. The agent doesn't just run features — it requests them.
+          It participates in its own evolution. And with each iteration, the loop tightens.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <blockquote>
+    "The most valuable bugs never appear in test suites. They live in the gap between
+    specification and experience — and only an agent inside the system, doing real work
+    with real intent, can find them."
+    <cite>&mdash; SAD Whitepaper, February 2026</cite>
+  </blockquote>
+</div>
+
+<!-- SAD METHODOLOGY -->
+<section id="sad">
+  <div class="inner">
+    <div class="section-label">Methodology</div>
+    <h2>Situational Agentic<br><strong>Development</strong></h2>
+    <p class="lead">
+      SAD is the development methodology we invented and use across every project.
+      First documented February 2026. To our knowledge, no prior literature describes
+      an onboard AI collaborating with a development AI to debug and evolve a product —
+      with the human serving primarily as supervisor.
+    </p>
+
+    <ul class="principles-list">
+      <li>
+        <div class="principle-num">01</div>
+        <div class="principle-body">
+          <strong>Embed, don't attach.</strong>
+          <p>The agent lives inside the product with access to real state, real controls, and real outcomes. Not analyzing logs — operating the system.</p>
+        </div>
+      </li>
+      <li>
+        <div class="principle-num">02</div>
+        <div class="principle-body">
+          <strong>Situational, not synthetic.</strong>
+          <p>The agent encounters problems through actual use, not predefined test scenarios. The bugs it finds are real-world, not laboratory artifacts.</p>
+        </div>
+      </li>
+      <li>
+        <div class="principle-num">03</div>
+        <div class="principle-body">
+          <strong>Self-diagnosing.</strong>
+          <p>When the agent hits unexpected behavior, it forms theories about root causes based on its observation of intent vs. outcome. The agent has usually already figured out the issue.</p>
+        </div>
+      </li>
+      <li>
+        <div class="principle-num">04</div>
+        <div class="principle-body">
+          <strong>Bidirectional development.</strong>
+          <p>The developer builds capabilities for the agent. The agent reports what capabilities it needs. Development flows in both directions.</p>
+        </div>
+      </li>
+      <li>
+        <div class="principle-num">05</div>
+        <div class="principle-body">
+          <strong>The agent is a stakeholder.</strong>
+          <p>Not just a bug-finder — the agent can suggest improvements, identify missing features, and evaluate workflow friction. Ask it: "What would make your job easier?"</p>
+        </div>
+      </li>
+    </ul>
+
+    <div style="margin-top: 48px;">
+      <div class="section-label" style="margin-bottom:0;">Operational AI vs. Situational AI</div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Operational AI</th>
+            <th style="color:var(--amber);">Situational AI (SAD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Position</td>
+            <td>Outside the system</td>
+            <td>Embedded inside the product</td>
+          </tr>
+          <tr>
+            <td>Bug discovery</td>
+            <td>Assertion failures in test suites</td>
+            <td>Intent vs. outcome during real operation</td>
+          </tr>
+          <tr>
+            <td>Diagnosis quality</td>
+            <td>"Test X failed with output Y"</td>
+            <td>"I tried to route to TV 15 and it stayed empty — is the state syncing?"</td>
+          </tr>
+          <tr>
+            <td>Feature input</td>
+            <td>None — executes specs written by humans</td>
+            <td>Requests features from operational experience</td>
+          </tr>
+          <tr>
+            <td>Learning</td>
+            <td>Per-run, stateless</td>
+            <td>Accumulates operational knowledge across sessions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--surface);">
+  <div class="inner">
+    <div class="section-label">Projects</div>
+    <h2>What We're <strong>Building</strong></h2>
+    <p class="lead">
+      Each project is an AI-native system — the intelligence is structural, not cosmetic.
+    </p>
+
+    <div class="projects-grid">
+
+      <!-- NSAV -->
+      <div class="project-card">
+        <div class="project-tag">Live &mdash; Commercial Deployment</div>
+        <h3>NSAV Control Suite</h3>
+        <p>
+          AI-powered AV control for sports bars. HAL, the embedded AI assistant, manages
+          46 DirecTV tuners and unlimited displays via natural language — "put ESPN on all
+          the main bar TVs." HAL self-diagnosed the toggle routing bug that blanked two screens
+          mid-shift. In a sports bar, a blank TV is never acceptable. HAL knew that before
+          the developer did.
+        </p>
+        <div class="project-tags">
+          <span class="tag">SAD / HAL</span>
+          <span class="tag">iPad-native</span>
+          <span class="tag">IPTV multicast</span>
+          <span class="tag">SNMP monitoring</span>
+        </div>
+      </div>
+
+      <!-- TODAI -->
+      <div class="project-card">
+        <div class="project-tag">Live &mdash; Shipping</div>
+        <h3>TodAI</h3>
+        <p>
+          AI-native task management with genuine persistent memory. Drop a medical bill PDF —
+          TodAI parses the amount, due date, account number, and auto-sets an alarm.
+          Jr., the embedded AI, remembers your context across sessions, scans Gmail,
+          processes Telegram images, and manages tasks across projects — without ever
+          leaving the app.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Electron</span>
+          <span class="tag">Persistent AI memory</span>
+          <span class="tag">Gmail integration</span>
+          <span class="tag">Pip-Boy aesthetic</span>
+        </div>
+      </div>
+
+      <!-- INBOX ONE -->
+      <div class="project-card">
+        <div class="project-tag">Live &mdash; Operational</div>
+        <h3>Inbox One</h3>
+        <p>
+          Alfred — an AI email concierge that reads the room. Three daily summaries, each
+          structured like a real briefing: bids and revenue opportunities first, then urgent
+          items, bills, shipments, vendor follow-ups. The marker system (!!!, $$$, &gt;&gt;&gt;)
+          communicates urgency without jargon. The goal: every inbox read in under 60 seconds.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Gmail API</span>
+          <span class="tag">Scheduled AI</span>
+          <span class="tag">SQL database</span>
+          <span class="tag">Alfred persona</span>
+        </div>
+      </div>
+
+      <!-- SID -->
+      <div class="project-card">
+        <div class="project-tag">Live &mdash; NSAV Control Suite</div>
+        <h3>SID</h3>
+        <p>
+          Systems Integrator Dashboard — real-time monitoring and reporting for AV systems.
+          COM51 satellite tuner infrastructure, SNR, bitrate, CC error tracking, and endpoint
+          status across all active components. SID watches the hardware so the operator doesn't
+          have to, surfacing signal degradation before it becomes an operator complaint. Feeds
+          alert data directly into HAL's awareness layer.
+        </p>
+        <div class="project-tags">
+          <span class="tag">COM51 tuners</span>
+          <span class="tag">SNR monitoring</span>
+          <span class="tag">HAL integration</span>
+          <span class="tag">Real-time alerts</span>
+        </div>
+      </div>
+
+      <!-- SECOND DATE -->
+      <div class="project-card">
+        <div class="project-tag">Concept &mdash; Seeking Partner</div>
+        <h3>Second Date</h3>
+        <p>
+          The YouTube Music algorithm for human compatibility. Every app optimizes for engagement
+          — keeping you on the app keeps you single. Second Date succeeds only when you do.
+          AI-to-AI pre-vetting. A mandatory video call (the actual first date) before the
+          venue unlocks. Every in-person meeting is already the second date.
+        </p>
+        <div class="project-tags">
+          <span class="tag">AI-to-AI matching</span>
+          <span class="tag">Behavioral learning</span>
+          <span class="tag">Safety-first</span>
+          <span class="tag">PDR data asset</span>
+        </div>
+      </div>
+
+      <!-- NSAV MONITORING -->
+      <div class="project-card">
+        <div class="project-tag">Tool &mdash; Internal</div>
+        <h3>NSAV Edge Monitor</h3>
+        <p>
+          Live network monitoring for IPTV deployments. SNMP polling of managed switches,
+          auto-discovery via Q-Bridge MIB, freeze detection with event logging, historical
+          traffic graphs, and per-port configuration — all in a single Flask app running
+          on-site. Built to diagnose the 30-second multicast freeze events at live venues.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Flask / SNMP</span>
+          <span class="tag">SQLite history</span>
+          <span class="tag">Chart.js</span>
+          <span class="tag">Auto-discovery</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NOODLE CODING -->
+<section class="noodle-section">
+  <div class="inner">
+    <div class="section-label">How We Work</div>
+    <h2>Noodle Coding</h2>
+    <p class="lead">
+      Our development style. Human and AI work side by side in open conversation — no rigid spec,
+      no predefined structure. Without constraints, novel processes emerge and applications grow
+      organically from the dialogue. The AI isn't just executing requests; it's slipping in ideas,
+      flagging better approaches, shaping the product alongside the human. The best features often
+      arrive uninvited.
+    </p>
+
+    <div class="noodle-cards">
+      <div class="noodle-card">
+        <div class="nc-num">01</div>
+        <h4>Intent-First</h4>
+        <p>Every session starts with a real problem, not an exercise. The code serves the product. The product serves real operators in real environments.</p>
+      </div>
+      <div class="noodle-card">
+        <div class="nc-num">02</div>
+        <h4>The AI is a Collaborator</h4>
+        <p>Not a code generator. Not a search engine. A collaborator that works side by side with the programmer as an active participant — encouraged to make suggestions and have a hand in the creative process.</p>
+      </div>
+      <div class="noodle-card">
+        <div class="nc-num">03</div>
+        <h4>Iterative Confidence</h4>
+        <p>Each working feature gives the developer more context and vocabulary to request the next one. The loop accelerates. Complexity compounds. Products emerge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="inner">
+    <div class="section-label">Contact</div>
+    <h2>Let's Build Something<br><strong>That Thinks</strong></h2>
+    <p class="lead">
+      If you're building an AI-native product, exploring the SAD methodology, or looking
+      for a partner who understands what it actually means to put intelligence inside a system —
+      reach out.
+    </p>
+    <a href="mailto:gene@autopoiesis.dev" class="contact-email">gene@autopoiesis.dev</a>
+  </div>
+</section>
+
+<footer>
+  <div class="copy">Autopoiesis Labs LLC</div>
+  <div style="margin-top:6px;">
+    <a href="mailto:gene@autopoiesis.dev" style="color:var(--muted); font-size:13px; border:none;">gene@autopoiesis.dev</a>
+  </div>
+  <div style="margin-top:8px;">
+    <a href="https://autopoiesis.design" target="_blank">autopoiesis.design</a>
+    <span class="sep">&middot;</span>
+    <a href="/Users/eugenegordon/Desktop/Claude Coder/NSAV Control Suite/SAD_Whitepaper.html">SAD Whitepaper</a>
+  </div>
+</footer>
+
+</body>
+</html>
